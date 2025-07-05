@@ -1,13 +1,41 @@
 package entity
 
-type CreateTaskRequest struct{}
+type CreateTaskRequest struct {
+	Content         string `json:"content" binding:"required"`
+	ContentEncoding string `json:"content_encoding" binding:"required"`
+	RenderWidth     int    `json:"render_width" binding:"required"`
+	RenderHeight    int    `json:"render_height" binding:"required"`
+	OutputFormat    string `json:"output_format,omitempty" binding:"omitempty"`
+	DelaySeconds    int    `json:"delay_seconds,omitempty" binding:"omitempty"`
+}
 
-type CreateTaskResponse struct{}
+type CreateTaskResponse = NoResponseContent
 
 type GetTaskStatusRequest = NoRequestContent
 
-type GetTaskStatusResponse struct{}
+type GetTaskStatusResponse struct {
+	Status        string                   `json:"status"`
+	ArchiveReason string                   `json:"archive_reason,omitempty"`
+	Timestamps    *GetTaskStatusTimestamps `json:"timestamps,omitempty"`
+}
 
-type ModifyTaskRequest struct{}
+type GetTaskStatusTimestamps struct {
+	CreatedAt   int64 `json:"created_at"`
+	ScheduledAt int64 `json:"scheduled_at,omitempty"`
+	CompletedAt int64 `json:"completed_at,omitempty"`
+	ArchivedAt  int64 `json:"archived_at,omitempty"`
+}
 
-type ModifyTaskResponse struct{}
+type ModifyTaskRequest struct {
+	Action  string             `json:"action" binding:"required"`
+	Options *ModifyTaskOptions `json:"options" binding:"required"`
+}
+
+type ModifyTaskOptions struct {
+	RenderWidth  int    `json:"render_width,omitempty" binding:"omitempty"`
+	RenderHeight int    `json:"render_height,omitempty" binding:"omitempty"`
+	OutputFormat string `json:"output_format,omitempty" binding:"omitempty"`
+	DelaySeconds int    `json:"delay_seconds,omitempty" binding:"omitempty"`
+}
+
+type ModifyTaskResponse = NoResponseContent

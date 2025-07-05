@@ -44,8 +44,27 @@ type DeletePainterResponse = NoRequestContent
 
 type GetPainterTaskListRequest = NoRequestContent
 
-type GetPainterTaskListResponse struct{}
+type GetPainterTaskListResponse struct {
+	Tasks []GetPainterTaskListRequest `json:"tasks"`
+}
 
-type CompletePainterTaskRequest struct{}
+type GetPainterTaskListItem struct {
+	TaskID         int    `json:"task_id"`
+	Height         int    `json:"height"`
+	Width          int    `json:"width"`
+	Priority       int    `json:"priority"`
+	DelaySeconds   int    `json:"delay_seconds"`
+	EncodedContent string `json:"encoded_content"`
+}
 
-type CompletePainterTaskResponse struct{}
+type CompletePainterTaskRequest struct {
+	Status           string `json:"status" binding:"required"`
+	Message          string `json:"message" binding:"required"`
+	StorageReference string `json:"storage_reference" binding:"required_if=Status complete"`
+	StartedAt        int64  `json:"started_at" binding:"required"`
+	CompletedAt      int64  `json:"completed_at" binding:"required"`
+}
+
+type CompletePainterTaskResponse struct {
+	Next []GetPainterTaskListItem `json:"next,omitempty"`
+}
