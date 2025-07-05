@@ -16,11 +16,14 @@ type Task struct {
 	Type          TaskType          `gorm:"column:type;type:tinyint(1);not null;default:0"`
 	Priority      TaskPriority      `gorm:"column:priority;type:tinyint(1);not null;default:0"`
 	Format        TaskFormat        `gorm:"column:format;type:tinyint(1);not null;default:0"`
+	DelayRender   uint8             `gorm:"column:delay_render;type:tinyint(1);not null;default:0"`
 	ExtraOptions  json.RawMessage   `gorm:"column:extra_options;type:json;default:'{}'"`
-	CreatedAt     time.Time         `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP"`
-	ScheduledAt   time.Time         `gorm:"column:scheduled_at;type:timestamp;not null"`
-	CompletedAt   time.Time         `gorm:"column:completed_at;type:timestamp;not null"`
-	ArchivedAt    time.Time         `gorm:"column:archived_at;type:timestamp;not null"`
+	Instance      uint64            `gorm:"column:instance;type:bigint(20);not null;default:0;index:idx_instance"`
+	CreatedAt     time.Time         `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP;index:idx_status"`
+	ScheduledAt   time.Time         `gorm:"column:scheduled_at;type:timestamp;not null;index:idx_status"`
+	CompletedAt   time.Time         `gorm:"column:completed_at;type:timestamp;not null;index:idx_status"`
+	ArchivedAt    time.Time         `gorm:"column:archived_at;type:timestamp;not null;index:idx_status"`
+	QuotaUsage    uint32            `gorm:"column:quota_usage;type:int(10);not null;default:0"`
 	ArchiveReason TaskArchiveReason `gorm:"column:archive_reason;type:tinyint(1);not null"`
 }
 

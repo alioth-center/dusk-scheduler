@@ -5,10 +5,11 @@ import "github.com/gin-gonic/gin"
 type PainterHandler struct{}
 
 func (h *PainterHandler) RegisterHandler(router *gin.RouterGroup) {
-	router.POST("/painter", h.PainterConnect)
-	router.DELETE("/painter/:painter_id", h.PainterDisconnect)
-	router.GET("/painter/:painter_id/task", h.GetPaintTaskList)
-	router.POST("/painter/:painter_id/task/:task_id", h.CompleteTask)
+	v1 := router.Group("/v1")
+	v1.POST("/painter", h.PainterConnect)
+	v1.DELETE("/painter/:painter_id", h.PainterDisconnect)
+	v1.GET("/painter/:painter_id/task", h.GetPaintTaskList)
+	v1.POST("/painter/:painter_id/task/:task_id", h.CompleteTask)
 }
 
 func (h *PainterHandler) PainterConnect(c *gin.Context) {
