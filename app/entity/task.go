@@ -14,9 +14,13 @@ type CreateTaskResponse = NoResponseContent
 type GetTaskStatusRequest = NoRequestContent
 
 type GetTaskStatusResponse struct {
-	Status        string                   `json:"status"`
-	ArchiveReason string                   `json:"archive_reason,omitempty"`
-	Timestamps    *GetTaskStatusTimestamps `json:"timestamps,omitempty"`
+	Size             string                   `json:"size"`
+	Priority         string                   `json:"priority"`
+	ContentHash      string                   `json:"content_hash"`
+	Status           string                   `json:"status"`
+	Timestamps       *GetTaskStatusTimestamps `json:"timestamps"`
+	OutcomeReference string                   `json:"outcome_reference,omitempty"`
+	ArchiveReason    string                   `json:"archive_reason,omitempty"`
 }
 
 type GetTaskStatusTimestamps struct {

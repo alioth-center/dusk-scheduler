@@ -15,8 +15,8 @@ type AuthorizeRequest struct {
 }
 
 type AuthorizeResponse struct {
-	RequestID       string `json:"request_id"`
-	AuthorizeResult string `json:"authorize_result"`
+	Maintainer string `json:"maintainer"`
+	ApiKey     string `json:"api_key"`
 }
 
 type GetMetadataRequest = NoRequestContent
@@ -41,7 +41,8 @@ type GetMetadataClientOption struct {
 type GetCompletedTasksRequest = NoRequestContent
 
 type GetCompletedTasksResponse struct {
-	Tasks []GetCompletedTaskItem `json:"tasks"`
+	Tasks   []GetCompletedTaskItem `json:"tasks"`
+	HasMore bool                   `json:"has_more,omitempty"`
 }
 
 type GetCompletedTaskItem struct {
@@ -64,6 +65,12 @@ type GetCompletedTaskItemTimestamps struct {
 type GetQuotaRequest = NoRequestContent
 
 type GetQuotaResponse struct {
-	TotalQuota int `json:"total_quota"`
-	UsedQuota  int `json:"used_quota"`
+	Details        GetQuotaDetails `json:"details"`
+	LastCheckpoint int64           `json:"last_checkpoint"`
+}
+
+type GetQuotaDetails struct {
+	TotalQuota     int `json:"total_quota"`
+	UsedQuota      int `json:"used_quota"`
+	RemainingQuota int `json:"remaining_quota"`
 }

@@ -27,12 +27,38 @@ type Task struct {
 	ArchiveReason TaskArchiveReason `gorm:"column:archive_reason;type:tinyint(1);not null"`
 }
 
+func (Task) TableName() string { return TableNameTask }
+
+func (t Task) Status() TaskStatus {
+	switch {
+	case !t.ArchivedAt.IsZero():
+		return TaskStatusArchived
+	case !t.CompletedAt.IsZero():
+		return TaskStatusCompleted
+	case !t.ScheduledAt.IsZero():
+		return TaskStatusProcessing
+	default:
+		return TaskStatusGenerated
+	}
+}
+
 type TaskType int8
 
 const (
 	TaskTypePainter TaskType = 0
 	TaskTypeBrush   TaskType = 1
 )
+
+func (enum TaskType) String() string {
+	switch enum {
+	case TaskTypePainter:
+		return "painter"
+	case TaskTypeBrush:
+		return "brush"
+	default:
+		return "unknown"
+	}
+}
 
 type TaskPriority int8
 
@@ -42,6 +68,19 @@ const (
 	TaskPriorityHigh   TaskPriority = 2
 )
 
+func (enum TaskPriority) String() string {
+	switch enum {
+	case TaskPriorityLow:
+		return "low"
+	case TaskPriorityMedium:
+		return "medium"
+	case TaskPriorityHigh:
+		return "high"
+	default:
+		return "unknown"
+	}
+}
+
 type TaskFormat int8
 
 const (
@@ -49,6 +88,19 @@ const (
 	TaskFormatImageURL      TaskFormat = 1
 	TaskFormatBase64Encoded TaskFormat = 2
 )
+
+func (enum TaskFormat) String() string {
+	switch enum {
+	case TaskFormatRawImage:
+		return "raw_image"
+	case TaskFormatImageURL:
+		return "image_url"
+	case TaskFormatBase64Encoded:
+		return "base64_encoded"
+	default:
+		return "unknown"
+	}
+}
 
 type TaskArchiveReason int8
 
@@ -61,4 +113,30 @@ const (
 	TaskArchiveReasonFailed       TaskArchiveReason = 5
 )
 
-func (Task) TableName() string { return TableNameTask }
+func (enum TaskArchiveReason) String() string {
+	switch enum {
+	case TaskArchiveReasonUnarchived:
+		return "unarchived"
+	case TaskArchiveReasonAcknowledged:
+		return "acknowledged"
+	case TaskArchiveReasonCancelled:
+		return "cancelled"
+	case TaskArchiveReasonLimited:
+		return "limited"
+	case TaskArchiveReasonExpired:
+		return "expired"
+	case TaskArchiveReasonFailed:
+		return "failed"
+	default:
+		return "unknown"
+	}
+}
+
+type TaskStatus = string
+
+const (
+	TaskStatusGenerated  TaskStatus = "generated"
+	TaskStatusProcessing TaskStatus = "processing"
+	TaskStatusCompleted  TaskStatus = "completed"
+	TaskStatusArchived   TaskStatus = "archived"
+)
