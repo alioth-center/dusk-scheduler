@@ -11,8 +11,8 @@ type Task struct {
 	ID            uint64            `gorm:"column:id;type:bigint(20);autoIncrement:true;primaryKey;not null"`
 	Submitter     uint64            `gorm:"column:submitter;type:bigint(20);not null;default:0;index:idx_submitter"`
 	ContentHash   string            `gorm:"column:content_hash;type:varchar(64);not null;default:'';index:idx_content"`
-	Width         uint              `gorm:"column:width;type:int(10);not null;default:0"`
-	Height        uint              `gorm:"column:height;type:int(10);not null;default:0"`
+	Width         uint32            `gorm:"column:width;type:int(10);not null;default:0"`
+	Height        uint32            `gorm:"column:height;type:int(10);not null;default:0"`
 	Type          TaskType          `gorm:"column:type;type:tinyint(1);not null;default:0"`
 	Priority      TaskPriority      `gorm:"column:priority;type:tinyint(1);not null;default:0"`
 	Format        TaskFormat        `gorm:"column:format;type:tinyint(1);not null;default:0"`
