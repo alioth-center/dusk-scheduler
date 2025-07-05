@@ -5,6 +5,7 @@ const TableNameClient = "client"
 type Client struct {
 	ID              uint64       `gorm:"column:id;type:bigint(20);autoIncrement;primaryKey;not null"`
 	Maintainer      string       `gorm:"column:maintainer;type:varchar(128);not null;default:'';uniqueIndex:uk_client"`
+	Region          string       `gorm:"column:region;type:varchar(128);not null;default:''"`
 	Authorized      bool         `gorm:"column:authorized;type:tinyint(1);not null;default:0"`
 	ApiKey          string       `gorm:"column:api_key;type:varchar(128);not null;default:'';uniqueIndex:uk_client"`
 	AllowBrush      bool         `gorm:"column:allow_brush;type:tinyint(1);not null;default:0"`

@@ -6,8 +6,7 @@ type RegisterRequest struct {
 }
 
 type RegisterResponse struct {
-	RequestID string `json:"request_id"`
-	ExpiredAt int64  `json:"expired_at"`
+	ExpiredAt int64 `json:"expired_at"`
 }
 
 type AuthorizeRequest struct {
