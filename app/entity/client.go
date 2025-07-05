@@ -1,0 +1,51 @@
+package entity
+
+type RegisterRequest struct {
+	EmailAddress   string `json:"email_address" binding:"required"`
+	RedemptionCode string `json:"redemption_code,omitempty" binding:"omitempty"`
+}
+
+type RegisterResponse struct {
+	RequestID string `json:"request_id"`
+	ExpiredAt int64  `json:"expired_at"`
+}
+
+type AuthorizeRequest struct {
+	EmailAddress      string `json:"email_address" binding:"required"`
+	AuthorizationCode string `json:"authorization_code" binding:"required"`
+}
+
+type AuthorizeResponse struct {
+	RequestID       string `json:"request_id"`
+	AuthorizeResult string `json:"authorize_result"`
+}
+
+type GetMetadataRequest = NoRequestContent
+
+type GetMetadataResponse struct {
+	Maintainer string                  `json:"maintainer"`
+	ApiKey     string                  `json:"api_key"`
+	Options    GetMetadataClientOption `json:"options"`
+}
+
+type GetMetadataClientOption struct {
+	BrushApiEnable          bool `json:"brush_api_enable"`
+	DelayRenderEnable       bool `json:"delay_render_enable"`
+	MaxRenderHeight         int  `json:"max_render_height"`
+	MaxRenderWidth          int  `json:"max_render_width"`
+	MaxPriority             int  `json:"max_priority"`
+	MaxRenderSize           int  `json:"max_render_size"`
+	RequestFrequency        int  `json:"request_frequency"`
+	FrequencyIntervalSecond int  `json:"frequency_interval_second"`
+}
+
+type GetCompletedTasksRequest = NoRequestContent
+
+type GetCompletedTasksResponse struct{}
+
+type GetQuotaRequest = NoRequestContent
+
+type GetQuotaResponse struct {
+	TotalQuota int `json:"total_quota"`
+	UsedQuota  int `json:"used_quota"`
+}
