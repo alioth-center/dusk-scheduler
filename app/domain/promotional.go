@@ -5,7 +5,7 @@ import "time"
 const TableNamePromotional = "promotional"
 
 type Promotional struct {
-	ID              uint64       `gorm:"column:id;type:bigint(20);primary_key;not null;primaryKey"`
+	ID              uint64       `gorm:"column:id;type:bigint(20);primary_key;not null;primaryKey;autoIncrement:true"`
 	Code            string       `gorm:"column:code;type:varchar(50);not null;unique;uniqueIndex:idx_code"`
 	CreatedAt       time.Time    `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP"`
 	AllowBrush      bool         `gorm:"column:allow_brush;type:tinyint(1);not null;default:0"`

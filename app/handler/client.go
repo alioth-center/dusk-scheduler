@@ -31,21 +31,21 @@ func (h *ClientHandler) RegisterHandler(router *gin.RouterGroup) {
 func (h *ClientHandler) RegisterClient(c *gin.Context) {
 	request := entity.RegisterRequest{}
 	if bindErr := c.ShouldBindJSON(&request); bindErr != nil {
-		_ = c.Error(errors.BadRequestError(bindErr))
+		errors.Ignore(c.Error(errors.BadRequestError(bindErr)))
 
 		return
 	}
 
 	ctx := c.Request.Context()
 	if validateErr := h.emailService.ValidateEmailAddress(ctx, request.EmailAddress); validateErr != nil {
-		_ = c.Error(errors.RegisterClientInvalidEmailAddressError())
+		errors.Ignore(c.Error(errors.RegisterClientInvalidEmailAddressError()))
 
 		return
 	}
 
 	clientData, createErr := h.clientService.CreateClient(ctx, request.EmailAddress, request.RedemptionCode, c.ClientIP())
 	if createErr != nil {
-		_ = c.Error(errors.InternalError())
+		errors.Ignore(c.Error(errors.InternalError()))
 
 		return
 	}
@@ -78,11 +78,11 @@ func (h *ClientHandler) AuthorizeClient(c *gin.Context) {
 
 	ctx, clientID := c.Request.Context(), uint64(0)
 	if cid := c.Param("client_id"); len(cid) == 0 {
-		_ = c.Error(errors.BadRequestError(errors.InvalidParameter("client_id")))
+		errors.Ignore(c.Error(errors.BadRequestError(errors.InvalidParameter("client_id"))))
 
 		return
 	} else if intVal, convertErr := strconv.Atoi(cid); convertErr != nil {
-		_ = c.Error(errors.BadRequestError(errors.InvalidParameter("client_id")))
+		errors.Ignore(c.Error(errors.BadRequestError(errors.InvalidParameter("client_id"))))
 
 		return
 	} else {
@@ -135,7 +135,7 @@ func (h *ClientHandler) GetCompletedTasks(c *gin.Context) {
 
 	ctx, clientID, offsetTaskID := c.Request.Context(), c.GetUint64(middleware.CtxKeyClientID), uint64(0)
 	if intVal, convertErr := strconv.Atoi(offsetTask); convertErr != nil {
-		_ = c.Error(errors.BadRequestError(errors.InvalidParameter("offset_task")))
+		errors.Ignore(c.Error(errors.BadRequestError(errors.InvalidParameter("offset_task"))))
 
 		return
 	} else {
@@ -144,7 +144,7 @@ func (h *ClientHandler) GetCompletedTasks(c *gin.Context) {
 
 	taskList, hasMore, queryErr := h.taskService.GetCompletedTasksByClientID(ctx, clientID, filters, offsetTaskID)
 	if queryErr != nil {
-		_ = c.Error(errors.InternalError())
+		errors.Ignore(c.Error(errors.InternalError()))
 
 		return
 	}

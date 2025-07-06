@@ -30,14 +30,26 @@ type TaskService interface {
 	GetTaskByID(ctx context.Context, taskID uint64) (task *domain.Task, exist bool, err error)
 	GetCompletedTasksByClientID(ctx context.Context, clientID uint64, statusFilter []string, offsetTaskID uint64) (tasks []*domain.Task, hasMore bool, err error)
 	ArchiveTaskByOutcomeReference(ctx context.Context, outcomeReference string, archiveReason domain.TaskArchiveReason) (exist bool, err error)
+	FlushPainterScheduler(ctx context.Context, painterName string)
+	GetScheduledTaskListByPainterName(ctx context.Context, painterName string) (list []*domain.Task, content []string, err error)
 }
 
 type OutcomeService interface {
+	CreateOutcome(ctx context.Context, painterName string, taskID uint64, reference string, createdAt, completedAt time.Time) (err error)
 	GetOutcomeContentByReference(ctx context.Context, reference string) (outcome *domain.Outcome, exist bool, err error)
 	GetOutcomeContent(ctx context.Context, reference string) (content *bytes.Buffer, err error)
 	GetOutcomeURL(ctx context.Context, reference string) (content *url.URL, err error)
 }
 
 type PainterService interface {
+	CreatePainter(ctx context.Context, maintainer string, slot int) (painter *domain.Painter, policy *domain.Storage, err error)
+	ReconnectPainter(ctx context.Context, name string) (heartbeat bool, err error)
+	DisconnectPainter(ctx context.Context, name string) (err error)
 	GetPainterByID(ctx context.Context, painterID uint64) (painter *domain.Painter, exist bool, err error)
+	GetPainterByName(ctx context.Context, name string) (painter *domain.Painter, exist bool, err error)
+	ValidatePainterByName(ctx context.Context, name string, secret string) (validated bool, err error)
+}
+
+type BrushService interface {
+	CreateBrush(ctx context.Context, maintainer string, slot int, protocol domain.BrushProtocol) (brush *domain.Brush, err error)
 }
