@@ -5,7 +5,7 @@ import "time"
 const TableNamePainter = "painter"
 
 type Painter struct {
-	ID             uint64    `gorm:"column:id;type:bigint(20);autoIncrement;not null;primaryKey;"`
+	ID             uint64    `gorm:"column:id;type:bigint(20);autoIncrement:true;not null;primaryKey;"`
 	Name           string    `gorm:"column:name;type:varchar(30);not null;uniqueIndex:uk_name"`
 	Location       string    `gorm:"column:location;type:varchar(30);not null;index:idx_location"`
 	Maintainer     string    `gorm:"column:maintainer;type:varchar(30);not null;index:idx_maintainer"`

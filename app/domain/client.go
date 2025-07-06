@@ -3,7 +3,7 @@ package domain
 const TableNameClient = "client"
 
 type Client struct {
-	ID              uint64       `gorm:"column:id;type:bigint(20);autoIncrement;primaryKey;not null"`
+	ID              uint64       `gorm:"column:id;type:bigint(20);autoIncrement:true;primaryKey;not null"`
 	Maintainer      string       `gorm:"column:maintainer;type:varchar(128);not null;default:'';uniqueIndex:uk_client"`
 	Region          string       `gorm:"column:region;type:varchar(128);not null;default:''"`
 	Authorized      bool         `gorm:"column:authorized;type:tinyint(1);not null;default:0"`

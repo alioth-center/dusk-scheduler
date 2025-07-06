@@ -5,7 +5,7 @@ import "time"
 const TableNameBrush = "brush"
 
 type Brush struct {
-	ID             uint64        `gorm:"column:id;type:bigint(20);autoIncrement;not null;primaryKey"`
+	ID             uint64        `gorm:"column:id;type:bigint(20);autoIncrement:true;not null;primaryKey"`
 	Name           string        `gorm:"column:name;type:varchar(30);not null;uniqueIndex:uk_name"`
 	Protocol       BrushProtocol `gorm:"column:protocol;type:tinyint(1);not null;default:1"`
 	Maintainer     string        `gorm:"column:maintainer;type:varchar(30);not null;index:idx_maintainer"`

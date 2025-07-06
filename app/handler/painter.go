@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type PainterHandler struct {
@@ -123,11 +124,7 @@ func (h *PainterHandler) CompleteTask(c *gin.Context) {
 	}
 
 	ctx, painterName, painterSecret, task := c.Request.Context(), c.Param("painter_name"), c.GetString(middleware.CtxKeyPainterSecret), &domain.Task{}
-	if tid := c.Param("task_id"); len(tid) == 0 {
-		errors.Ignore(c.Error(errors.InvalidParameter("task_id")))
-
-		return
-	} else if intVal, convertErr := strconv.ParseUint(tid, 10, 64); convertErr != nil {
+	if intVal, convertErr := strconv.ParseUint(c.Param("task_id"), 10, 64); convertErr != nil {
 		errors.Ignore(c.Error(errors.InvalidParameter("task_id")))
 
 		return
@@ -143,5 +140,40 @@ func (h *PainterHandler) CompleteTask(c *gin.Context) {
 		task = checkedTask
 	}
 
-	// todo: complete task
+	if completeErr := h.taskService.CompleteTask(ctx, task.ID); completeErr != nil {
+		errors.Ignore(c.Error(errors.InternalError()))
+
+		return
+	}
+
+	if request.Status == domain.OutcomeCompleteReasonCompleted.String() {
+		startedAt, completedAt := time.Unix(request.StartedAt, 0), time.Unix(request.CompletedAt, 0)
+		if createErr := h.outcomeService.CreateOutcome(ctx, painterName, task.ID, request.StorageReference, startedAt, completedAt); createErr != nil {
+			errors.Ignore(c.Error(errors.InternalError()))
+
+			return
+		}
+	}
+
+	nextList, nextContent, queryErr := h.taskService.GetNextScheduledTaskListByPainterName(ctx, painterName)
+	if queryErr != nil {
+		errors.Ignore(c.Error(errors.InternalError()))
+
+		return
+	}
+
+	taskList := make([]entity.GetPainterTaskListItem, len(nextList))
+	for i, taskItem := range nextList {
+		content := nextContent[i]
+		taskList[i] = entity.GetPainterTaskListItem{
+			TaskID:         int(taskItem.ID),
+			Height:         int(taskItem.Height),
+			Width:          int(taskItem.Width),
+			Priority:       int(taskItem.Priority),
+			DelaySeconds:   int(taskItem.DelayRender),
+			EncodedContent: content,
+			Checksum:       utils.EncryptHmacSha256String(content, painterSecret),
+		}
+	}
+	c.JSON(http.StatusOK, entity.SuccessResponse(&entity.GetPainterTaskListResponse{Tasks: taskList}))
 }

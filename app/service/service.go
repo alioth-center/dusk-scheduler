@@ -29,9 +29,11 @@ type ClientService interface {
 type TaskService interface {
 	GetTaskByID(ctx context.Context, taskID uint64) (task *domain.Task, exist bool, err error)
 	GetCompletedTasksByClientID(ctx context.Context, clientID uint64, statusFilter []string, offsetTaskID uint64) (tasks []*domain.Task, hasMore bool, err error)
+	CompleteTask(ctx context.Context, taskID uint64) (err error)
 	ArchiveTaskByOutcomeReference(ctx context.Context, outcomeReference string, archiveReason domain.TaskArchiveReason) (exist bool, err error)
 	FlushPainterScheduler(ctx context.Context, painterName string)
 	GetScheduledTaskListByPainterName(ctx context.Context, painterName string) (list []*domain.Task, content []string, err error)
+	GetNextScheduledTaskListByPainterName(ctx context.Context, painterName string) (list []*domain.Task, content []string, err error)
 }
 
 type OutcomeService interface {
