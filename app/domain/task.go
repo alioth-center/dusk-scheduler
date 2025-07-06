@@ -102,6 +102,19 @@ func (enum TaskFormat) String() string {
 	}
 }
 
+func TaskFormatFromString(s string) TaskFormat {
+	switch s {
+	case "raw_image":
+		return TaskFormatRawImage
+	case "image_url":
+		return TaskFormatImageURL
+	case "base64_encoded":
+		return TaskFormatBase64Encoded
+	default:
+		return TaskFormatImageURL
+	}
+}
+
 type TaskArchiveReason int8
 
 const (

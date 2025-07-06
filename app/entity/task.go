@@ -29,17 +29,3 @@ type GetTaskStatusTimestamps struct {
 	CompletedAt int64 `json:"completed_at,omitempty"`
 	ArchivedAt  int64 `json:"archived_at,omitempty"`
 }
-
-type ModifyTaskRequest struct {
-	Action  string             `json:"action" binding:"required"`
-	Options *ModifyTaskOptions `json:"options" binding:"required"`
-}
-
-type ModifyTaskOptions struct {
-	RenderWidth  int    `json:"render_width,omitempty" binding:"omitempty"`
-	RenderHeight int    `json:"render_height,omitempty" binding:"omitempty"`
-	OutputFormat string `json:"output_format,omitempty" binding:"omitempty"`
-	DelaySeconds int    `json:"delay_seconds,omitempty" binding:"omitempty"`
-}
-
-type ModifyTaskResponse = NoResponseContent

@@ -27,3 +27,7 @@ func ResourceNotFound(resource string, reference any) error {
 func InternalError() ApiError {
 	return ApiError{}
 }
+
+func CustomError(message string) error {
+	return fmt.Errorf("%s", message)
+}

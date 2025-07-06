@@ -106,8 +106,8 @@ func (h *ClientHandler) AuthorizeClient(c *gin.Context) {
 
 func (h *ClientHandler) GetMetadata(c *gin.Context) {
 	ctx, clientID := c.Request.Context(), c.GetUint64(middleware.CtxKeyClientID)
-	client, queryErr := h.clientService.GetClientData(ctx, clientID)
-	if queryErr != nil {
+	client, exist, queryErr := h.clientService.GetClientData(ctx, clientID)
+	if queryErr != nil || !exist {
 		errors.Ignore(c.Error(errors.InternalError()))
 
 		return
