@@ -113,7 +113,7 @@ func (h *ClientHandler) GetMetadata(c *gin.Context) {
 		return
 	}
 
-	response := &entity.GetMetadataResponse{
+	response := entity.GetMetadataResponse{
 		Maintainer: client.Maintainer,
 		ApiKey:     client.ApiKey,
 		Options: entity.GetMetadataClientOption{
@@ -149,7 +149,7 @@ func (h *ClientHandler) GetCompletedTasks(c *gin.Context) {
 		return
 	}
 
-	response := &entity.GetCompletedTasksResponse{
+	response := entity.GetCompletedTasksResponse{
 		HasMore: hasMore,
 		Tasks:   make([]entity.GetCompletedTaskItem, len(taskList)),
 	}
@@ -177,7 +177,7 @@ func (h *ClientHandler) GetQuotaUsage(c *gin.Context) {
 		return
 	}
 
-	response := &entity.GetQuotaResponse{
+	response := entity.GetQuotaResponse{
 		Details: entity.GetQuotaDetails{
 			TotalQuota:     int(total),
 			UsedQuota:      int(usage),

@@ -1,9 +1,11 @@
 package service
 
 import (
+	"bytes"
 	"context"
 	"github.com/alioth-center/dusk-scheduler/app/domain"
 	"github.com/alioth-center/dusk-scheduler/infra/apis/location"
+	"net/url"
 	"time"
 )
 
@@ -25,7 +27,17 @@ type ClientService interface {
 }
 
 type TaskService interface {
+	GetTaskByID(ctx context.Context, taskID uint64) (task *domain.Task, exist bool, err error)
 	GetCompletedTasksByClientID(ctx context.Context, clientID uint64, statusFilter []string, offsetTaskID uint64) (tasks []*domain.Task, hasMore bool, err error)
+	ArchiveTaskByOutcomeReference(ctx context.Context, outcomeReference string, archiveReason domain.TaskArchiveReason) (exist bool, err error)
 }
 
-type OutcomeService interface{}
+type OutcomeService interface {
+	GetOutcomeContentByReference(ctx context.Context, reference string) (outcome *domain.Outcome, exist bool, err error)
+	GetOutcomeContent(ctx context.Context, reference string) (content *bytes.Buffer, err error)
+	GetOutcomeURL(ctx context.Context, reference string) (content *url.URL, err error)
+}
+
+type PainterService interface {
+	GetPainterByID(ctx context.Context, painterID uint64) (painter *domain.Painter, exist bool, err error)
+}
