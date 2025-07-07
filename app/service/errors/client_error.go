@@ -7,3 +7,15 @@ func RegisterClientInvalidEmailAddressError() error {
 func AuthorizeClientFailedError() error {
 	return nil
 }
+
+func RedemptionCodeNotFoundError() error {
+	return nil
+}
+
+func InvalidAuthorizationCodeError() error {
+	return nil
+}
+
+func EmailAddressOrCodeMismatchError() error {
+	return nil
+}

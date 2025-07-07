@@ -58,3 +58,7 @@ type BrushService interface {
 	DisconnectBrush(ctx context.Context, name string) (err error)
 	RenderImage(ctx context.Context, taskID uint64) (result *bytes.Buffer, err error)
 }
+
+type PromotionalService interface {
+	CheckPromotionalByCode(ctx context.Context, code string) (exist bool, err error)
+}

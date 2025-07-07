@@ -14,9 +14,10 @@ import (
 )
 
 type ClientHandler struct {
-	emailService  service.EmailService
-	clientService service.ClientService
-	taskService   service.TaskService
+	emailService       service.EmailService
+	clientService      service.ClientService
+	taskService        service.TaskService
+	promotionalService service.PromotionalService
 }
 
 func (h *ClientHandler) RegisterHandler(router *gin.RouterGroup) {
@@ -43,6 +44,18 @@ func (h *ClientHandler) RegisterClient(c *gin.Context) {
 		return
 	}
 
+	existCode, queryCodeErr := h.promotionalService.CheckPromotionalByCode(ctx, request.RedemptionCode)
+	if queryCodeErr != nil {
+		errors.Ignore(c.Error(errors.InternalError()))
+
+		return
+	}
+	if !existCode {
+		errors.Ignore(c.Error(errors.RedemptionCodeNotFoundError()))
+
+		return
+	}
+
 	clientData, createErr := h.clientService.CreateClient(ctx, request.EmailAddress, request.RedemptionCode, c.ClientIP())
 	if createErr != nil {
 		errors.Ignore(c.Error(errors.InternalError()))
@@ -50,7 +63,7 @@ func (h *ClientHandler) RegisterClient(c *gin.Context) {
 		return
 	}
 
-	code := strings.ToUpper(utils.GenerateRandomString(6))
+	code := utils.GenerateAuthCode(6)
 	expiredAt, cacheErr := h.clientService.StoreAuthorizationCode(ctx, clientData.ID, code)
 	if cacheErr != nil {
 		errors.Ignore(c.Error(errors.InternalError()))

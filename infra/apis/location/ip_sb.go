@@ -53,7 +53,7 @@ func (i *ipSbPositionLocator) DetectIP(ctx context.Context, ip string) (result *
 
 	defer func() { _ = response.Body.Close() }()
 	if response.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf(response.Status)
+		return nil, fmt.Errorf("%s", response.Status)
 	}
 
 	responsePayload := &IpSbQueryResponse{}
@@ -66,5 +66,6 @@ func (i *ipSbPositionLocator) DetectIP(ctx context.Context, ip string) (result *
 		Longitude: responsePayload.Longitude,
 		Latitude:  responsePayload.Latitude,
 	}
+
 	return result, nil
 }

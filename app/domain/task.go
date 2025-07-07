@@ -9,7 +9,7 @@ const TableNameTask = "task"
 
 type Task struct {
 	ID            uint64            `gorm:"column:id;type:bigint(20);autoIncrement:true;primaryKey;not null"`
-	Submitter     uint64            `gorm:"column:submitter;type:bigint(20);not null;default:0;index:idx_submitter"`
+	Submitter     uint64            `gorm:"column:submitter;type:bigint(20);not null;default:0;index:idx_submitter;index:idx_statistics"`
 	ContentHash   string            `gorm:"column:content_hash;type:varchar(64);not null;default:'';index:idx_content"`
 	Width         uint32            `gorm:"column:width;type:int(10);not null;default:0"`
 	Height        uint32            `gorm:"column:height;type:int(10);not null;default:0"`
@@ -21,7 +21,7 @@ type Task struct {
 	Instance      uint64            `gorm:"column:instance;type:bigint(20);not null;default:0;index:idx_instance"`
 	CreatedAt     time.Time         `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP;index:idx_status"`
 	ScheduledAt   time.Time         `gorm:"column:scheduled_at;type:timestamp;not null;index:idx_status"`
-	CompletedAt   time.Time         `gorm:"column:completed_at;type:timestamp;not null;index:idx_status"`
+	CompletedAt   time.Time         `gorm:"column:completed_at;type:timestamp;not null;index:idx_status;index:idx_statistics"`
 	ArchivedAt    time.Time         `gorm:"column:archived_at;type:timestamp;not null;index:idx_status"`
 	QuotaUsage    uint32            `gorm:"column:quota_usage;type:int(10);not null;default:0"`
 	ArchiveReason TaskArchiveReason `gorm:"column:archive_reason;type:tinyint(1);not null"`

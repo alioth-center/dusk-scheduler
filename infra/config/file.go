@@ -30,5 +30,4 @@ func (f *fileConfig) ParseAppConfig(_, _ string, receiver any) error {
 		panic("unknown config file extension")
 	}
 
-	return nil
 }
