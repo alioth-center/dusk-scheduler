@@ -1,7 +1,8 @@
 package config
 
 type AppConfig struct {
-	EmailConfig EmailConfig `json:"email_config" yaml:"email_config"`
+	EmailConfig           EmailConfig           `json:"email_config" yaml:"email_config"`
+	PositionLocatorConfig PositionLocatorConfig `json:"position_locator_config" yaml:"position_locator_config"`
 }
 
 type DatabaseConfig struct{}
@@ -28,4 +29,8 @@ type EmailConfigSmtpProvider struct {
 	Host     string `json:"host" yaml:"host"`
 	Port     int    `json:"port" yaml:"port"`
 	Sender   string `json:"sender" yaml:"sender"`
+}
+
+type PositionLocatorConfig struct {
+	Provider string `json:"provider" yaml:"provider"`
 }

@@ -9,6 +9,6 @@ type Address struct {
 	Latitude  float64
 }
 
-type Location interface {
+type PositionLocator interface {
 	DetectIP(ctx context.Context, ip string) (result *Address, err error)
 }

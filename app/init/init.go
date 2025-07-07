@@ -1,6 +1,7 @@
 package init
 
 import (
+	"github.com/alioth-center/dusk-scheduler/app/service"
 	"github.com/alioth-center/dusk-scheduler/infra/config"
 	"os"
 )
@@ -34,6 +35,7 @@ func initConfig() {
 
 func initInfra() {
 	initEmailSenderClient(&appConfig)
+	initPositionLocator(&appConfig)
 }
 
 func initRepository() {
@@ -41,7 +43,8 @@ func initRepository() {
 }
 
 func initService() {
-
+	emailService = service.NewEmailService(emailSenderClient, sysLogger, &appConfig)
+	locationService = service.NewLocationService(positionLocator, sysLogger)
 }
 
 func initHandler() {
