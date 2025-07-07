@@ -8,12 +8,12 @@ type RegisterPainterRequest struct {
 }
 
 type RegisterPainterResponse struct {
-	Name   string                      `json:"name"`
-	Secret string                      `json:"secret"`
-	Policy RegisterPainterUploadPolicy `json:"policy"`
+	Name   string                `json:"name"`
+	Secret string                `json:"secret"`
+	Policy RegisterPainterPolicy `json:"policy"`
 }
 
-type RegisterPainterUploadPolicy struct {
+type RegisterPainterPolicy struct {
 	Protocol string          `json:"protocol"`
 	Options  json.RawMessage `json:"options"`
 }

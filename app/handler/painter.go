@@ -54,7 +54,7 @@ func (h *PainterHandler) PainterConnect(c *gin.Context) {
 	response := entity.RegisterPainterResponse{
 		Name:   painter.Name,
 		Secret: painter.Secret,
-		Policy: entity.RegisterPainterUploadPolicy{
+		Policy: entity.RegisterPainterPolicy{
 			Protocol: policy.Protocol.String(),
 			Options:  policy.Options,
 		},
