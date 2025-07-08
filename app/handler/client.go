@@ -147,12 +147,12 @@ func (h *ClientHandler) GetCompletedTasks(c *gin.Context) {
 	filters, offsetTask := strings.Split(c.Query("filter"), ","), c.Query("offset_task")
 
 	ctx, clientID, offsetTaskID := c.Request.Context(), c.GetUint64(middleware.CtxKeyClientID), uint64(0)
-	if intVal, convertErr := strconv.Atoi(offsetTask); convertErr != nil {
+	if intVal, convertErr := strconv.ParseUint(offsetTask, 10, 64); convertErr != nil {
 		errors.Ignore(c.Error(errors.BadRequestError(errors.InvalidParameter("offset_task"))))
 
 		return
 	} else {
-		offsetTaskID = uint64(intVal)
+		offsetTaskID = intVal
 	}
 
 	taskList, hasMore, queryErr := h.taskService.GetCompletedTasksByClientID(ctx, clientID, filters, offsetTaskID)

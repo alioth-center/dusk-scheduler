@@ -149,7 +149,14 @@ func (srv *clientService) AuthorizeClient(ctx context.Context, clientID uint64, 
 }
 
 func (srv *clientService) GetClientData(ctx context.Context, clientID uint64) (client *domain.Client, exist bool, err error) {
-	return srv.clientDao.GetClientByID(ctx, clientID)
+	client, exist, err = srv.clientDao.GetClientByID(ctx, clientID)
+	if err != nil {
+		srv.sysLogger.ErrorCtx(ctx, fmt.Sprintf("failed to get client by id: %d", clientID), err)
+
+		return nil, false, err
+	}
+
+	return client, exist, nil
 }
 
 func (srv *clientService) GetClientQuotaUsage(ctx context.Context, clientID uint64) (quotaTotal, quotaUsage uint64, lastCheckTime time.Time, err error) {

@@ -4,6 +4,7 @@ type AppConfig struct {
 	EmailConfig           EmailConfig           `json:"email_config" yaml:"email_config"`
 	PositionLocatorConfig PositionLocatorConfig `json:"position_locator_config" yaml:"position_locator_config"`
 	ClientOptions         ClientOptions         `json:"client_options" yaml:"client_options"`
+	TaskOptions           TaskOptions           `json:"task_options" yaml:"task_options"`
 }
 
 type DatabaseConfig struct{}
@@ -55,4 +56,8 @@ type DefaultClientPermission struct {
 	DefaultQuota    int    `json:"default_quota" yaml:"default_quota"`
 	LimitFrequency  int    `json:"limit_frequency" yaml:"limit_frequency"`
 	LimitDuration   int    `json:"limit_duration" yaml:"limit_duration"`
+}
+
+type TaskOptions struct {
+	ListPageLimit int `json:"list_page_limit" yaml:"list_page_limit"`
 }
