@@ -1,6 +1,7 @@
 package init
 
 import (
+	"github.com/alioth-center/dusk-scheduler/app/repository"
 	"github.com/alioth-center/dusk-scheduler/app/service"
 	"github.com/alioth-center/dusk-scheduler/infra/config"
 	"os"
@@ -39,12 +40,18 @@ func initInfra() {
 }
 
 func initRepository() {
+	clientDao = repository.NewClientDao(database)
+	taskDao = repository.NewTaskDao(database)
+	promotionalDao = repository.NewPromotionalDao(database)
 
+	authorizationCache = repository.NewAuthorizationCache(caching)
+	quotaCache = repository.NewQuotaCache(caching)
 }
 
 func initService() {
 	emailService = service.NewEmailService(emailSenderClient, sysLogger, &appConfig)
 	locationService = service.NewLocationService(positionLocator, sysLogger)
+	clientService = service.NewClientService(clientDao, promotionalDao, taskDao, authorizationCache, quotaCache, locationService, sysLogger, &appConfig)
 }
 
 func initHandler() {

@@ -25,6 +25,6 @@ type AuthorizationCache interface {
 }
 
 type QuotaCache interface {
-	LastStatisticsAt(ctx context.Context) (time.Time, error)
+	LastStatisticsAt(ctx context.Context) (statisticsAt time.Time, err error)
 	GetTotalQuota(ctx context.Context, clientID uint64) (quota uint64, err error)
 }
