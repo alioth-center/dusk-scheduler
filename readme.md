@@ -9,6 +9,7 @@
 <img src="https://img.shields.io/github/go-mod/go-version/alioth-center/dusk-scheduler" alt="Go Version"/>
 <img src="https://goreportcard.com/badge/github.com/alioth-center/dusk-scheduler" alt="Go Report Card"/>
 <img src="https://img.shields.io/github/license/alioth-center/dusk-scheduler" alt="License"/>
+<img src="https://wakatime.com/badge/github/alioth-center/dusk-scheduler.svg" alt="WakaTime"/>
 
 # **D**usk **U**niversal **S**cene **K**it - Scheduler
 
