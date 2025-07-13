@@ -1,6 +1,7 @@
 package init
 
 import (
+	"github.com/alioth-center/dusk-scheduler/app/handler"
 	"github.com/alioth-center/dusk-scheduler/app/repository"
 	"github.com/alioth-center/dusk-scheduler/app/service"
 	"github.com/alioth-center/dusk-scheduler/infra/config"
@@ -13,6 +14,7 @@ func init() {
 	initRepository()
 	initService()
 	initHandler()
+	initEngine()
 }
 
 func initConfig() {
@@ -35,6 +37,7 @@ func initConfig() {
 }
 
 func initInfra() {
+	initHttpClient(&appConfig)
 	initEmailSenderClient(&appConfig)
 	initPositionLocator(&appConfig, httpClient)
 }
@@ -57,5 +60,26 @@ func initService() {
 }
 
 func initHandler() {
+	brushHandler = handler.NewBrushHandler(emailService, brushService)
+	clientHandler = handler.NewClientHandler(emailService, clientService, taskService, promotionalService)
+	outcomeHandler = handler.NewOutcomeHandler(taskService, outcomeService, painterService)
+	painterHandler = handler.NewPainterHandler(taskService, outcomeService, emailService, painterService)
+	taskHandler = handler.NewTaskHandler(clientService, taskService, outcomeService, brushService)
 
+	handlers = []handler.Handler{
+		brushHandler, clientHandler, outcomeHandler, painterHandler, taskHandler,
+	}
+}
+
+func initEngine() {
+	initGinEngine(&appConfig)
+
+	routerGroup := engine.Group("/dusk-scheduler")
+	for _, h := range handlers {
+		h.RegisterHandler(routerGroup)
+	}
+}
+
+func RunApp() {
+	runGinEngine(&appConfig)
 }

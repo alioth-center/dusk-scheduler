@@ -20,6 +20,20 @@ type PainterHandler struct {
 	painterService service.PainterService
 }
 
+func NewPainterHandler(
+	taskService service.TaskService,
+	outcomeService service.OutcomeService,
+	emailService service.EmailService,
+	painterService service.PainterService,
+) *PainterHandler {
+	return &PainterHandler{
+		taskService:    taskService,
+		outcomeService: outcomeService,
+		emailService:   emailService,
+		painterService: painterService,
+	}
+}
+
 func (h *PainterHandler) RegisterHandler(router *gin.RouterGroup) {
 	v1 := router.Group("/v1")
 	v1.POST("/painter", h.PainterConnect)

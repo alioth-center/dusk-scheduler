@@ -13,6 +13,16 @@ type BrushHandler struct {
 	brushService service.BrushService
 }
 
+func NewBrushHandler(
+	emailService service.EmailService,
+	brushService service.BrushService,
+) *BrushHandler {
+	return &BrushHandler{
+		emailService: emailService,
+		brushService: brushService,
+	}
+}
+
 func (h *BrushHandler) RegisterHandler(router *gin.RouterGroup) {
 	v1 := router.Group("v1")
 	v1.POST("/brush", h.BrushConnect)

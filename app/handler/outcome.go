@@ -16,6 +16,18 @@ type OutcomeHandler struct {
 	painterService service.PainterService
 }
 
+func NewOutcomeHandler(
+	taskService service.TaskService,
+	outcomeService service.OutcomeService,
+	painterService service.PainterService,
+) *OutcomeHandler {
+	return &OutcomeHandler{
+		taskService:    taskService,
+		outcomeService: outcomeService,
+		painterService: painterService,
+	}
+}
+
 func (h *OutcomeHandler) RegisterHandler(router *gin.RouterGroup) {
 	v1 := router.Group("/v1")
 	v1.GET("/outcome/:outcome_reference", h.GetOutcomeContent)

@@ -7,6 +7,11 @@ import (
 	"net/http"
 )
 
+func initHttpClient(_ *config.AppConfig) {
+	// todo: add http client options
+	httpClient = http.DefaultClient
+}
+
 func initEmailSenderClient(config *config.AppConfig) {
 	emailConfig := config.EmailConfig
 	switch emailConfig.Provider {

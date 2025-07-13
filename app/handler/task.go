@@ -20,7 +20,21 @@ type TaskHandler struct {
 	brushService   service.BrushService
 }
 
-func (h *TaskHandler) RegisterRouter(router *gin.RouterGroup) {
+func NewTaskHandler(
+	clientService service.ClientService,
+	taskService service.TaskService,
+	outcomeService service.OutcomeService,
+	brushService service.BrushService,
+) *TaskHandler {
+	return &TaskHandler{
+		clientService:  clientService,
+		taskService:    taskService,
+		outcomeService: outcomeService,
+		brushService:   brushService,
+	}
+}
+
+func (h *TaskHandler) RegisterHandler(router *gin.RouterGroup) {
 	v1 := router.Group("/v1")
 	v1.POST("/task", h.GenerateTask)
 	v1.POST("/task/brush", h.GenerateBrushTask)

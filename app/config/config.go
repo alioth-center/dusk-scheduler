@@ -1,11 +1,17 @@
 package config
 
 type AppConfig struct {
+	EngineConfig          EngineConfig          `json:"engine_config" yaml:"engine_config"`
 	EmailConfig           EmailConfig           `json:"email_config" yaml:"email_config"`
 	PositionLocatorConfig PositionLocatorConfig `json:"position_locator_config" yaml:"position_locator_config"`
 	ClientOptions         ClientOptions         `json:"client_options" yaml:"client_options"`
 	TaskOptions           TaskOptions           `json:"task_options" yaml:"task_options"`
 	PainterOptions        PainterOptions        `json:"painter_options" yaml:"painter_options"`
+}
+
+type EngineConfig struct {
+	RunMode  string `json:"run_mode" yaml:"run_mode"`
+	ListenAt string `json:"listen_at" yaml:"listen_at"`
 }
 
 type DatabaseConfig struct{}

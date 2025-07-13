@@ -20,6 +20,20 @@ type ClientHandler struct {
 	promotionalService service.PromotionalService
 }
 
+func NewClientHandler(
+	emailService service.EmailService,
+	clientService service.ClientService,
+	taskService service.TaskService,
+	promotionalService service.PromotionalService,
+) *ClientHandler {
+	return &ClientHandler{
+		emailService:       emailService,
+		clientService:      clientService,
+		taskService:        taskService,
+		promotionalService: promotionalService,
+	}
+}
+
 func (h *ClientHandler) RegisterHandler(router *gin.RouterGroup) {
 	v1 := router.Group("/v1")
 	v1.POST("/client", h.RegisterClient)
