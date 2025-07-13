@@ -18,5 +18,5 @@ func runGinEngine(config *config.AppConfig) {
 		panic("invalid listening address")
 	}
 
-	engine.Run(listenAt)
+	_ = engine.Run(listenAt)
 }

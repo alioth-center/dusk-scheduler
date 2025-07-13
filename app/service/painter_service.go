@@ -71,6 +71,7 @@ func (srv *painterService) CreatePainter(ctx context.Context, maintainer string,
 		Slot:        uint8(slot),
 		RegisterAt:  time.Now(),
 		ConnectedAt: time.Now(),
+		ConnectTime: 1,
 		PolicyID:    policyEntity.ID,
 	}
 	painterID, createErr := srv.painterDao.CreatePainter(ctx, &painterEntity)

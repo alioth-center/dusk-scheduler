@@ -25,6 +25,12 @@ type PromotionalDao interface {
 	GetPromotionalByCode(ctx context.Context, code string) (promotional *domain.Promotional, exist bool, err error)
 }
 
+type BrushDao interface {
+	CreateBrush(ctx context.Context, brush *domain.Brush) (brushID uint64, err error)
+	GetBrushByID(ctx context.Context, brushID uint64) (brush *domain.Brush, exist bool, err error)
+	UpdateBrushAsDisconnected(ctx context.Context, brushID uint64) error
+}
+
 type OutcomeDao interface {
 	CreateOutcome(ctx context.Context, outcome *domain.Outcome) (outcomeID uint64, err error)
 	GetOutcomeByReference(ctx context.Context, outcomeReference string) (outcome *domain.Outcome, exist bool, err error)
@@ -56,6 +62,7 @@ type QuotaCache interface {
 }
 
 type TaskContentCache interface {
+	GetTaskContent(ctx context.Context, taskID uint64) (content *bytes.Buffer, err error)
 	StoreTaskContent(ctx context.Context, taskID uint64, content *bytes.Buffer) (err error)
 	DeleteTaskContent(ctx context.Context, taskID uint64) (err error)
 }
@@ -64,4 +71,10 @@ type PainterHeartbeatCache interface {
 	GetHeartbeatTime(ctx context.Context, name string) (lastHeartbeatAt time.Time, err error)
 	UpdateHeartbeatTime(ctx context.Context, name string) (err error)
 	DeleteHeartbeatTime(ctx context.Context, name string) (err error)
+}
+
+type BrushCache interface {
+	AddBrush(ctx context.Context, brushID uint64) (err error)
+	RemoveBrush(ctx context.Context, brushID uint64) (err error)
+	GetRandomBrush(ctx context.Context) (brushID uint64, err error)
 }

@@ -19,6 +19,22 @@ type taskService struct {
 	appConfig        *config.AppConfig
 }
 
+func NewTaskService(
+	taskDao repository.TaskDao,
+	outcomeDao repository.OutcomeDao,
+	taskContentCache repository.TaskContentCache,
+	sysLogger logger.Logger,
+	appConfig *config.AppConfig,
+) TaskService {
+	return &taskService{
+		taskDao:          taskDao,
+		outcomeDao:       outcomeDao,
+		taskContentCache: taskContentCache,
+		sysLogger:        sysLogger,
+		appConfig:        appConfig,
+	}
+}
+
 func (srv *taskService) CreateTask(ctx context.Context, task *domain.Task, base64Content string) (taskID uint64, err error) {
 	// store task content
 	if storeErr := srv.taskContentCache.StoreTaskContent(ctx, taskID, bytes.NewBufferString(base64Content)); storeErr != nil {
@@ -79,7 +95,7 @@ func (srv *taskService) GetCompletedTasksByClientID(ctx context.Context, clientI
 func (srv *taskService) CompleteTask(ctx context.Context, taskID uint64) (err error) {
 	// update task in database
 	if updateErr := srv.taskDao.UpdateTaskAsCompleted(ctx, taskID); updateErr != nil {
-		srv.sysLogger.ErrorCtx(ctx, fmt.Sprintf("failed to update task as completed: %s", taskID), updateErr)
+		srv.sysLogger.ErrorCtx(ctx, fmt.Sprintf("failed to update task as completed: %d", taskID), updateErr)
 
 		return updateErr
 	}
@@ -90,6 +106,8 @@ func (srv *taskService) CompleteTask(ctx context.Context, taskID uint64) (err er
 
 		return deleteErr
 	}
+
+	// todo: update quota usage for painter
 
 	return nil
 }
@@ -122,7 +140,7 @@ func (srv *taskService) ArchiveTaskByOutcomeReference(ctx context.Context, outco
 		return false, nil
 	}
 	if updateErr := srv.taskDao.UpdateTaskAsArchived(ctx, task.ID, archiveReason); updateErr != nil {
-		srv.sysLogger.ErrorCtx(ctx, fmt.Sprintf("failed to update task as archived: %s", task.ID), updateErr)
+		srv.sysLogger.ErrorCtx(ctx, fmt.Sprintf("failed to update task as archived: %d", task.ID), updateErr)
 
 		return false, updateErr
 	}

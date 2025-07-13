@@ -9,6 +9,7 @@ import (
 	"github.com/alioth-center/dusk-scheduler/infra/cache"
 	"github.com/alioth-center/dusk-scheduler/infra/email"
 	"github.com/alioth-center/dusk-scheduler/infra/logger"
+	"github.com/alioth-center/dusk-scheduler/infra/sdk"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -26,6 +27,7 @@ var (
 	sysLogger         logger.Logger
 	emailSenderClient email.SenderClient
 	positionLocator   location.PositionLocator
+	brushSdk          sdk.BrushSDK
 )
 
 var (
@@ -35,10 +37,13 @@ var (
 	painterDao     repository.PainterDao
 	outcomeDao     repository.OutcomeDao
 	storageDao     repository.StorageDao
+	brushDao       repository.BrushDao
 
 	authorizationCache    repository.AuthorizationCache
 	quotaCache            repository.QuotaCache
 	painterHeartbeatCache repository.PainterHeartbeatCache
+	taskContentCache      repository.TaskContentCache
+	brushCache            repository.BrushCache
 )
 
 var (

@@ -5,12 +5,11 @@ import "encoding/json"
 type RegisterBrushRequest struct {
 	Maintainer string `json:"maintainer" binding:"required"`
 	Protocol   string `json:"protocol" binding:"required"`
+	CallURL    string `json:"call_url" binding:"required"`
 }
 
 type RegisterBrushResponse struct {
-	Name   string              `json:"name"`
-	Secret string              `json:"secret"`
-	Policy RegisterBrushPolicy `json:"policy"`
+	BrushID int `json:"brush_id"`
 }
 
 type RegisterBrushPolicy struct {

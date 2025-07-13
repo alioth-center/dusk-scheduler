@@ -4,6 +4,7 @@ import (
 	"github.com/alioth-center/dusk-scheduler/app/config"
 	"github.com/alioth-center/dusk-scheduler/infra/apis/location"
 	"github.com/alioth-center/dusk-scheduler/infra/email"
+	"github.com/alioth-center/dusk-scheduler/infra/sdk"
 	"net/http"
 )
 
@@ -41,4 +42,8 @@ func initPositionLocator(config *config.AppConfig, httpClient *http.Client) {
 	default:
 		positionLocator = location.NewIpSbPositionLocator(httpClient)
 	}
+}
+
+func initBrushSdk(_ *config.AppConfig, client *http.Client) {
+	brushSdk = sdk.NewBrushSDK(client)
 }

@@ -54,8 +54,8 @@ type PainterService interface {
 }
 
 type BrushService interface {
-	CreateBrush(ctx context.Context, maintainer string, protocol string) (brush *domain.Brush, policy *domain.Storage, err error)
-	DisconnectBrush(ctx context.Context, name string) (err error)
+	CreateBrush(ctx context.Context, maintainer string, protocol string, callURL string) (brushID uint64, err error)
+	DisconnectBrush(ctx context.Context, brushID uint64) (err error)
 	RenderImage(ctx context.Context, taskID uint64) (result *bytes.Buffer, err error)
 }
 

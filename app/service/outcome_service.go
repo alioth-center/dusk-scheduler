@@ -161,7 +161,7 @@ func (srv *outComeService) GetOutcomeURL(ctx context.Context, reference string) 
 		return nil, getPainterErr
 	}
 	if !existPainter {
-		srv.sysLogger.WarnCtx(ctx, fmt.Sprintf("painter does not exist: %s", outcome.Instance), nil)
+		srv.sysLogger.WarnCtx(ctx, fmt.Sprintf("painter does not exist: %d", outcome.Instance), nil)
 
 		return nil, errors.GetOutcomeContentPainterNotFoundError()
 	}
@@ -173,7 +173,7 @@ func (srv *outComeService) GetOutcomeURL(ctx context.Context, reference string) 
 		return nil, getStorageErr
 	}
 	if !existStorage {
-		srv.sysLogger.WarnCtx(ctx, fmt.Sprintf("storage does not exist: %s", painter.PolicyID), nil)
+		srv.sysLogger.WarnCtx(ctx, fmt.Sprintf("storage does not exist: %d", painter.PolicyID), nil)
 
 		return nil, errors.GetOutcomeContentStorageNotFoundError()
 	}

@@ -40,6 +40,7 @@ func initInfra() {
 	initHttpClient(&appConfig)
 	initEmailSenderClient(&appConfig)
 	initPositionLocator(&appConfig, httpClient)
+	initBrushSdk(&appConfig, httpClient)
 }
 
 func initRepository() {
@@ -56,7 +57,9 @@ func initService() {
 	locationService = service.NewLocationService(positionLocator, sysLogger)
 	clientService = service.NewClientService(clientDao, promotionalDao, taskDao, authorizationCache, quotaCache, locationService, sysLogger, &appConfig)
 	outcomeService = service.NewOutcomeService(taskDao, painterDao, outcomeDao, storageDao, sysLogger, httpClient)
+	taskService = service.NewTaskService(taskDao, outcomeDao, taskContentCache, sysLogger, &appConfig)
 	painterService = service.NewPainterService(storageDao, painterDao, painterHeartbeatCache, sysLogger, locationService, &appConfig)
+	brushService = service.NewBrushService(brushDao, taskDao, brushCache, taskContentCache, brushSdk, sysLogger)
 }
 
 func initHandler() {

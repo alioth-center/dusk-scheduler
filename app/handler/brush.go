@@ -6,6 +6,7 @@ import (
 	"github.com/alioth-center/dusk-scheduler/app/service/errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 type BrushHandler struct {
@@ -26,7 +27,7 @@ func NewBrushHandler(
 func (h *BrushHandler) RegisterHandler(router *gin.RouterGroup) {
 	v1 := router.Group("v1")
 	v1.POST("/brush", h.BrushConnect)
-	v1.DELETE("/brush/:brush_name", h.BrushDisconnect)
+	v1.DELETE("/brush/:brush_id", h.BrushDisconnect)
 }
 
 func (h *BrushHandler) BrushConnect(c *gin.Context) {
@@ -44,27 +45,31 @@ func (h *BrushHandler) BrushConnect(c *gin.Context) {
 		return
 	}
 
-	painter, policy, createErr := h.brushService.CreateBrush(ctx, request.Maintainer, request.Protocol)
+	brushID, createErr := h.brushService.CreateBrush(ctx, request.Maintainer, request.Protocol, request.CallURL)
 	if createErr != nil {
 		errors.Ignore(c.Error(errors.InternalError()))
 
 		return
 	}
 
-	response := entity.RegisterBrushResponse{
-		Name:   painter.Name,
-		Secret: painter.Secret,
-		Policy: entity.RegisterBrushPolicy{
-			Protocol: policy.Protocol.String(),
-			Options:  policy.Options,
-		},
-	}
-	c.JSON(http.StatusOK, entity.SuccessResponse(&response))
+	c.JSON(http.StatusOK, entity.SuccessResponse(&entity.RegisterBrushResponse{BrushID: int(brushID)}))
 }
 
 func (h *BrushHandler) BrushDisconnect(c *gin.Context) {
-	ctx, brushName := c.Request.Context(), c.Param("brush_name")
-	if disconnectErr := h.brushService.DisconnectBrush(ctx, brushName); disconnectErr != nil {
+	ctx, brushID := c.Request.Context(), uint64(0)
+	if params := c.Param("brush_id"); len(params) == 0 {
+		errors.Ignore(c.Error(errors.InvalidParameter("brush_id")))
+
+		return
+	} else if intVal, convertErr := strconv.ParseUint(params, 10, 64); convertErr != nil {
+		errors.Ignore(c.Error(errors.InvalidParameter("brush_id")))
+
+		return
+	} else {
+		brushID = intVal
+	}
+
+	if disconnectErr := h.brushService.DisconnectBrush(ctx, brushID); disconnectErr != nil {
 		errors.Ignore(c.Error(errors.InternalError()))
 
 		return
