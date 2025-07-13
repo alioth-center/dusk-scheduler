@@ -31,7 +31,7 @@ func (h *OutcomeHandler) GetOutcomeContent(c *gin.Context) {
 	}
 
 	ctx := c.Request.Context()
-	outcome, existOutcome, getOutcomeErr := h.outcomeService.GetOutcomeContentByReference(ctx, outcomeReference)
+	outcome, existOutcome, getOutcomeErr := h.outcomeService.GetOutcomeByReference(ctx, outcomeReference)
 	if getOutcomeErr != nil {
 		errors.Ignore(c.Error(errors.InternalError()))
 

@@ -45,7 +45,7 @@ type TaskService interface {
 type OutcomeService interface {
 	CreateOutcome(ctx context.Context, painterName string, taskID uint64, reference string, createdAt, completedAt time.Time) (err error)
 	GetOutcomeByTaskID(ctx context.Context, taskID uint64) (outcome *domain.Outcome, exist bool, err error)
-	GetOutcomeContentByReference(ctx context.Context, reference string) (outcome *domain.Outcome, exist bool, err error)
+	GetOutcomeByReference(ctx context.Context, reference string) (outcome *domain.Outcome, exist bool, err error)
 	GetOutcomeContent(ctx context.Context, reference string) (content *bytes.Buffer, err error)
 	GetOutcomeURL(ctx context.Context, reference string) (content *url.URL, err error)
 }

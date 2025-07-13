@@ -11,6 +11,7 @@ type Storage struct {
 	ID         uint64          `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true;not null"`
 	Protocol   StorageProtocol `gorm:"column:protocol;type:tinyint(1);not null;default:0"`
 	PolicyName string          `gorm:"column:policy_name;type:varchar(50);not null;unique;uniqueIndex:uk_name"`
+	Formatter  string          `gorm:"column:formatter;type:varchar(512);not null"`
 	Options    json.RawMessage `gorm:"column:options;type:json;not null;default:'{}'"`
 	CreatedAt  time.Time       `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP"`
 	UpdatedAt  time.Time       `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP"`

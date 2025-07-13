@@ -26,7 +26,18 @@ type PromotionalDao interface {
 }
 
 type OutcomeDao interface {
+	CreateOutcome(ctx context.Context, outcome *domain.Outcome) (outcomeID uint64, err error)
 	GetOutcomeByReference(ctx context.Context, outcomeReference string) (outcome *domain.Outcome, exist bool, err error)
+	GetOutcomeByTaskID(ctx context.Context, outcomeID uint64) (outcome *domain.Outcome, exist bool, err error)
+}
+
+type PainterDao interface {
+	GetPainterByID(ctx context.Context, painterID uint64) (painter *domain.Painter, exist bool, err error)
+	GetPainterByName(ctx context.Context, name string) (painter *domain.Painter, exist bool, err error)
+}
+
+type StorageDao interface {
+	GetStorageByID(ctx context.Context, storageID uint64) (storage *domain.Storage, exist bool, err error)
 }
 
 type AuthorizationCache interface {
