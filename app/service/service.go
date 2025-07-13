@@ -18,10 +18,6 @@ type LocationService interface {
 	DetectIPLocation(ctx context.Context, ip string) (address *location.Address, err error)
 }
 
-type QueueService interface {
-	CreateTask(ctx context.Context, action func() error)
-}
-
 type ClientService interface {
 	CreateClient(ctx context.Context, email string, promotionCode string, ip string) (client *domain.Client, err error)
 	StoreAuthorizationCode(ctx context.Context, clientID uint64, authorizationCode string) (expiredAt time.Time, err error)
@@ -51,7 +47,7 @@ type OutcomeService interface {
 }
 
 type PainterService interface {
-	CreatePainter(ctx context.Context, maintainer string, slot int) (painter *domain.Painter, policy *domain.Storage, err error)
+	CreatePainter(ctx context.Context, maintainer string, slot int, ip string) (painter *domain.Painter, policy *domain.Storage, err error)
 	ReconnectPainter(ctx context.Context, name string) (heartbeat bool, err error)
 	DisconnectPainter(ctx context.Context, name string) (err error)
 	GetPainterByID(ctx context.Context, painterID uint64) (painter *domain.Painter, exist bool, err error)

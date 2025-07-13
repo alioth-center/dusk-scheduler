@@ -53,6 +53,7 @@ func initService() {
 	locationService = service.NewLocationService(positionLocator, sysLogger)
 	clientService = service.NewClientService(clientDao, promotionalDao, taskDao, authorizationCache, quotaCache, locationService, sysLogger, &appConfig)
 	outcomeService = service.NewOutcomeService(taskDao, painterDao, outcomeDao, storageDao, sysLogger, httpClient)
+	painterService = service.NewPainterService(storageDao, painterDao, painterHeartbeatCache, sysLogger, locationService, &appConfig)
 }
 
 func initHandler() {

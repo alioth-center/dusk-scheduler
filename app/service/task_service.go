@@ -15,7 +15,6 @@ type taskService struct {
 	taskDao          repository.TaskDao
 	outcomeDao       repository.OutcomeDao
 	taskContentCache repository.TaskContentCache
-	queueService     QueueService
 	sysLogger        logger.Logger
 	appConfig        *config.AppConfig
 }
@@ -86,15 +85,11 @@ func (srv *taskService) CompleteTask(ctx context.Context, taskID uint64) (err er
 	}
 
 	// delete cached task content
-	srv.queueService.CreateTask(ctx, func() error {
-		if deleteErr := srv.taskContentCache.DeleteTaskContent(ctx, taskID); deleteErr != nil {
-			srv.sysLogger.ErrorCtx(ctx, fmt.Sprintf("failed to delete task content: %d", taskID), deleteErr)
+	if deleteErr := srv.taskContentCache.DeleteTaskContent(ctx, taskID); deleteErr != nil {
+		srv.sysLogger.ErrorCtx(ctx, fmt.Sprintf("failed to delete task content: %d", taskID), deleteErr)
 
-			return deleteErr
-		}
-
-		return nil
-	})
+		return deleteErr
+	}
 
 	return nil
 }

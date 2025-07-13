@@ -32,12 +32,17 @@ type OutcomeDao interface {
 }
 
 type PainterDao interface {
+	CreatePainter(ctx context.Context, painter *domain.Painter) (painterID uint64, err error)
+	UpdatePainterName(ctx context.Context, painterID uint64, name string) error
 	GetPainterByID(ctx context.Context, painterID uint64) (painter *domain.Painter, exist bool, err error)
 	GetPainterByName(ctx context.Context, name string) (painter *domain.Painter, exist bool, err error)
+	UpdatePainterAsConnected(ctx context.Context, painterID uint64) error
+	UpdatePainterAsDisconnected(ctx context.Context, painterID uint64) error
 }
 
 type StorageDao interface {
 	GetStorageByID(ctx context.Context, storageID uint64) (storage *domain.Storage, exist bool, err error)
+	GetStorageByName(ctx context.Context, name string) (storage *domain.Storage, exist bool, err error)
 }
 
 type AuthorizationCache interface {
@@ -53,4 +58,10 @@ type QuotaCache interface {
 type TaskContentCache interface {
 	StoreTaskContent(ctx context.Context, taskID uint64, content *bytes.Buffer) (err error)
 	DeleteTaskContent(ctx context.Context, taskID uint64) (err error)
+}
+
+type PainterHeartbeatCache interface {
+	GetHeartbeatTime(ctx context.Context, name string) (lastHeartbeatAt time.Time, err error)
+	UpdateHeartbeatTime(ctx context.Context, name string) (err error)
+	DeleteHeartbeatTime(ctx context.Context, name string) (err error)
 }

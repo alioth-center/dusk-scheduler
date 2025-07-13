@@ -44,12 +44,13 @@ func (h *PainterHandler) PainterConnect(c *gin.Context) {
 		return
 	}
 
-	painter, policy, createErr := h.painterService.CreatePainter(ctx, request.Maintainer, request.Slot)
+	painter, policy, createErr := h.painterService.CreatePainter(ctx, request.Maintainer, request.Slot, c.ClientIP())
 	if createErr != nil {
 		errors.Ignore(c.Error(errors.InternalError()))
 
 		return
 	}
+	h.taskService.FlushPainterScheduler(ctx, painter.Name)
 
 	response := entity.RegisterPainterResponse{
 		Name:   painter.Name,

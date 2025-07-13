@@ -33,8 +33,9 @@ var (
 	outcomeDao     repository.OutcomeDao
 	storageDao     repository.StorageDao
 
-	authorizationCache repository.AuthorizationCache
-	quotaCache         repository.QuotaCache
+	authorizationCache    repository.AuthorizationCache
+	quotaCache            repository.QuotaCache
+	painterHeartbeatCache repository.PainterHeartbeatCache
 )
 
 var (
@@ -42,4 +43,5 @@ var (
 	locationService service.LocationService
 	clientService   service.ClientService
 	outcomeService  service.OutcomeService
+	painterService  service.PainterService
 )
