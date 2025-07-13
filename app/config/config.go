@@ -5,6 +5,7 @@ type AppConfig struct {
 	PositionLocatorConfig PositionLocatorConfig `json:"position_locator_config" yaml:"position_locator_config"`
 	ClientOptions         ClientOptions         `json:"client_options" yaml:"client_options"`
 	TaskOptions           TaskOptions           `json:"task_options" yaml:"task_options"`
+	PainterOptions        PainterOptions        `json:"painter_options" yaml:"painter_options"`
 }
 
 type DatabaseConfig struct{}
@@ -60,4 +61,10 @@ type DefaultClientPermission struct {
 
 type TaskOptions struct {
 	ListPageLimit int `json:"list_page_limit" yaml:"list_page_limit"`
+}
+
+type PainterOptions struct {
+	StoragePolicy    string              `json:"storage_policy" yaml:"storage_policy"`
+	NamingRule       string              `json:"naming_rule" yaml:"naming_rule"`
+	NamingDictionary map[string][]string `json:"naming_dictionary" yaml:"naming_dictionary"`
 }

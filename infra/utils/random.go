@@ -16,6 +16,23 @@ var (
 		"M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h",
 		"i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
 	}
+
+	defaultNameDictionary = []string{
+		"exusiai", "siege", "irit", "eyjafjalla", "angelina", "shining", "nightingale", "hoshiguma", "saria", "silverash",
+		"skadi", "ch'en", "schwarz", "hellagur", "magallan", "mostima", "blaze", "aak", "nian", "ceobe", "bagpipe",
+		"phantom", "weedy", "w", "роса", "suzuran", "thorns", "eunectes", "surtr", "blemishine", "mudrock", "rosmontis",
+		"mountain", "archetto", "saga", "dusk", "ash", "passenger", "gladiia", "kal'tsit", "skadi-the-corrupting-heart",
+		"carnelian", "pallas", "mizuki", "ch'en-the-holungday", "saileach", "fartooth", "flametail",
+		"nearl-the-radiant-knight", "gnosis", "lee", "ling", "goldenglow", "fiammetta", "horn", "lumen", "irene",
+		"specter-the-unchained", "ebenholz", "dorothy", "позёмка", "gavial-the-invincible", "młynar", "stainless",
+		"vigil", "penance", "texas-the-omertosa", "reed-the-flame-shadow", "lin", "chongyue", "qiubai", "kirin-r-yato",
+		"ines", "silence-the-paradigmatic", "ho'olheyak", "muelsyse", "executor-the-ex-foedere", "typhon",
+		"swire-the-elegant-wit", "eyjafjalla-the-hvít-aska", "jessica-the-liberated", "hoederer", "lessing", "viviana",
+		"virtuosa", "degenbrecher", "ray", "zuo-le", "shu", "ela", "ascalon", "civilight-eterna", "logos", "wiš'adel",
+		"ulpianus", "nymph", "narantuya", "pepe", "marcille", "vina-victoria", "crownslayer", "vulpisfoglia",
+		"lappland-the-decadenza", "thorns-the-lodestar", "blaze-the-igniting-spark", "yu", "entelechia", "necras",
+		"mon3tr", "sankta-miksaparato", "lemuen", "exusiai-the-new-covenant", "tragodia", "leizi-the-thunderbringer",
+	}
 )
 
 func GenerateAuthCode(length int) string {
@@ -45,4 +62,19 @@ func GenerateToken(length int, prefix string) string {
 	}
 
 	return result.String()
+}
+
+func GenerateNameByDefaultDictionary(pk uint64) string {
+	return GenerateName(pk, defaultNameDictionary)
+}
+
+func GenerateName(pk uint64, dictionary []string) (result string) {
+	index := int(pk)%len(dictionary) - 1
+	if index < 0 {
+		index += len(dictionary)
+	}
+
+	suffix := IntegerAliasRoman(int(pk)/len(dictionary) + 1)
+
+	return dictionary[index] + "." + suffix
 }
