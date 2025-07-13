@@ -29,8 +29,10 @@ type ipSbPositionLocator struct {
 	client *http.Client
 }
 
-func NewIpSbPositionLocator() PositionLocator {
-	return &ipSbPositionLocator{client: http.DefaultClient}
+func NewIpSbPositionLocator(
+	client *http.Client,
+) PositionLocator {
+	return &ipSbPositionLocator{client: client}
 }
 
 func (i *ipSbPositionLocator) DetectIP(ctx context.Context, ip string) (result *Address, err error) {

@@ -36,7 +36,7 @@ func initConfig() {
 
 func initInfra() {
 	initEmailSenderClient(&appConfig)
-	initPositionLocator(&appConfig)
+	initPositionLocator(&appConfig, httpClient)
 }
 
 func initRepository() {
@@ -52,6 +52,7 @@ func initService() {
 	emailService = service.NewEmailService(emailSenderClient, sysLogger, &appConfig)
 	locationService = service.NewLocationService(positionLocator, sysLogger)
 	clientService = service.NewClientService(clientDao, promotionalDao, taskDao, authorizationCache, quotaCache, locationService, sysLogger, &appConfig)
+	outcomeService = service.NewOutcomeService(taskDao, painterDao, outcomeDao, storageDao, sysLogger, httpClient)
 }
 
 func initHandler() {

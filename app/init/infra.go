@@ -4,6 +4,7 @@ import (
 	"github.com/alioth-center/dusk-scheduler/app/config"
 	"github.com/alioth-center/dusk-scheduler/infra/apis/location"
 	"github.com/alioth-center/dusk-scheduler/infra/email"
+	"net/http"
 )
 
 func initEmailSenderClient(config *config.AppConfig) {
@@ -23,7 +24,7 @@ func initEmailSenderClient(config *config.AppConfig) {
 	}
 }
 
-func initPositionLocator(config *config.AppConfig) {
+func initPositionLocator(config *config.AppConfig, httpClient *http.Client) {
 	locatorConfig := config.PositionLocatorConfig
 	switch locatorConfig.Provider {
 	case "tencent_map":
@@ -31,8 +32,8 @@ func initPositionLocator(config *config.AppConfig) {
 	case "amap":
 		panic("amap support not implemented yet")
 	case "ip.sb":
-		positionLocator = location.NewIpSbPositionLocator()
+		positionLocator = location.NewIpSbPositionLocator(httpClient)
 	default:
-		positionLocator = location.NewIpSbPositionLocator()
+		positionLocator = location.NewIpSbPositionLocator(httpClient)
 	}
 }

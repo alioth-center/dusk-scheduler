@@ -23,6 +23,24 @@ type outComeService struct {
 	client     *http.Client
 }
 
+func NewOutcomeService(
+	taskDao repository.TaskDao,
+	painterDao repository.PainterDao,
+	outcomeDao repository.OutcomeDao,
+	storageDao repository.StorageDao,
+	sysLogger logger.Logger,
+	client *http.Client,
+) OutcomeService {
+	return &outComeService{
+		taskDao:    taskDao,
+		painterDao: painterDao,
+		outcomeDao: outcomeDao,
+		storageDao: storageDao,
+		sysLogger:  sysLogger,
+		client:     client,
+	}
+}
+
 func (srv *outComeService) CreateOutcome(ctx context.Context, painterName string, taskID uint64, reference string, createdAt, completedAt time.Time) (err error) {
 	task, existTask, getTaskErr := srv.taskDao.GetTaskByID(ctx, taskID)
 	if getTaskErr != nil {

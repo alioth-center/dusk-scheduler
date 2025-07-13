@@ -9,12 +9,14 @@ import (
 	"github.com/alioth-center/dusk-scheduler/infra/email"
 	"github.com/alioth-center/dusk-scheduler/infra/logger"
 	"gorm.io/gorm"
+	"net/http"
 )
 
 var (
-	appConfig config.AppConfig
-	database  *gorm.DB
-	caching   cache.Cache
+	httpClient *http.Client
+	appConfig  config.AppConfig
+	database   *gorm.DB
+	caching    cache.Cache
 )
 
 var (
@@ -27,6 +29,9 @@ var (
 	clientDao      repository.ClientDao
 	taskDao        repository.TaskDao
 	promotionalDao repository.PromotionalDao
+	painterDao     repository.PainterDao
+	outcomeDao     repository.OutcomeDao
+	storageDao     repository.StorageDao
 
 	authorizationCache repository.AuthorizationCache
 	quotaCache         repository.QuotaCache
@@ -36,4 +41,5 @@ var (
 	emailService    service.EmailService
 	locationService service.LocationService
 	clientService   service.ClientService
+	outcomeService  service.OutcomeService
 )
