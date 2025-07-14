@@ -7,33 +7,73 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"time"
 )
 
 type Database interface {
 	DriverName() string
-	DSN() string
-	Config() *gorm.Config
+	DSN(dataSource map[string]any) string
+	Config(options map[string]any) *gorm.Config
 }
 
-func ConnectDatabase(db Database) (driver *gorm.DB, err error) {
+type Config struct {
+	StringSize         uint
+	MaxIdleConnections uint
+	MaxOpenConnections uint
+	ConnectionLifeTime uint
+	DriverName         string
+	DriverOptions      map[string]any
+	DataSource         map[string]any
+}
+
+func ConnectDatabase(db Database, logger logger.Interface, conf Config) (driver *gorm.DB, err error) {
 	if db == nil {
 		err = errors.New("database is nil")
 
 		return nil, err
 	}
 
-	switch db.DriverName() {
+	switch conf.DriverName {
 	case "mysql":
-		driver, err = gorm.Open(mysql.Open(db.DSN()), db.Config())
+		driver, err = gorm.Open(mysql.New(mysql.Config{
+			DriverName:        db.DriverName(),
+			DSN:               db.DSN(conf.DataSource),
+			DefaultStringSize: conf.StringSize,
+		}), db.Config(conf.DriverOptions))
+	case "mariadb":
+		driver, err = gorm.Open(mysql.New(mysql.Config{
+			DriverName:                db.DriverName(),
+			DSN:                       db.DSN(conf.DataSource),
+			SkipInitializeWithVersion: false,
+			DefaultStringSize:         conf.StringSize,
+			DontSupportRenameIndex:    true,
+			DontSupportRenameColumn:   true,
+		}), db.Config(conf.DriverOptions))
 	case "postgres":
-		driver, err = gorm.Open(postgres.Open(db.DSN()), db.Config())
+		driver, err = gorm.Open(postgres.New(postgres.Config{
+			DriverName: db.DriverName(),
+			DSN:        db.DSN(conf.DataSource),
+		}), db.Config(conf.DriverOptions))
 	case "sqlite":
-		driver, err = gorm.Open(sqlite.Open(db.DSN()), db.Config())
+		driver, err = gorm.Open(sqlite.Open(db.DSN(conf.DataSource)), db.Config(conf.DriverOptions))
 	case "sqlserver":
-		driver, err = gorm.Open(sqlserver.Open(db.DSN()), db.Config())
+		driver, err = gorm.Open(sqlserver.Open(db.DSN(conf.DataSource)), db.Config(conf.DriverOptions))
 	default:
 		panic("unsupported database driver")
 	}
+	if err != nil {
+		return nil, err
+	}
 
-	return driver, err
+	driver.Logger = logger
+	rawDB, getErr := driver.DB()
+	if getErr != nil {
+		return nil, getErr
+	}
+	rawDB.SetMaxIdleConns(int(conf.MaxIdleConnections))
+	rawDB.SetMaxOpenConns(int(conf.MaxOpenConnections))
+	rawDB.SetConnMaxLifetime(time.Duration(conf.ConnectionLifeTime) * time.Second)
+
+	return driver, nil
 }

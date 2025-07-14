@@ -2,12 +2,19 @@ package init
 
 import (
 	"github.com/alioth-center/dusk-scheduler/app/config"
+	"github.com/alioth-center/dusk-scheduler/app/handler"
 	"github.com/gin-gonic/gin"
 )
 
-func initGinEngine(_ *config.AppConfig) {
+func initGinEngine(config *config.AppConfig) {
 	// todo: add gin engine options
+	engineConfig := config.EngineConfig
 	engine = gin.Default()
+
+	handlers = []handler.Handler{brushHandler, clientHandler, outcomeHandler, painterHandler, taskHandler}
+	if engineConfig.EnableAdminApi {
+
+	}
 }
 
 func runGinEngine(config *config.AppConfig) {

@@ -2,6 +2,7 @@ package config
 
 type AppConfig struct {
 	EngineConfig          EngineConfig          `json:"engine_config" yaml:"engine_config"`
+	DatabaseConfig        DatabaseConfig        `json:"database_config" yaml:"database_config"`
 	EmailConfig           EmailConfig           `json:"email_config" yaml:"email_config"`
 	PositionLocatorConfig PositionLocatorConfig `json:"position_locator_config" yaml:"position_locator_config"`
 	ClientOptions         ClientOptions         `json:"client_options" yaml:"client_options"`
@@ -10,11 +11,21 @@ type AppConfig struct {
 }
 
 type EngineConfig struct {
-	RunMode  string `json:"run_mode" yaml:"run_mode"`
-	ListenAt string `json:"listen_at" yaml:"listen_at"`
+	RunMode        string `json:"run_mode" yaml:"run_mode"`
+	ListenAt       string `json:"listen_at" yaml:"listen_at"`
+	EnableAdminApi bool   `json:"enable_admin_api" yaml:"enable_admin_api"`
 }
 
-type DatabaseConfig struct{}
+type DatabaseConfig struct {
+	Driver             string         `json:"driver" yaml:"driver"`
+	MigrateDomains     bool           `json:"migrate_domains" yaml:"migrate_domains"`
+	StringSize         int            `json:"string_size" yaml:"string_size"`
+	MaxIdleConnections int            `json:"max_idle_connections" yaml:"max_idle_connections"`
+	MaxOpenConnections int            `json:"max_open_connections" yaml:"max_open_connections"`
+	ConnectionLifeTime int            `json:"connection_life_time" yaml:"connection_life_time"`
+	DataSource         map[string]any `json:"data_source" yaml:"data_source"`
+	DriverOptions      map[string]any `json:"driver_options,omitempty" yaml:"driver_options,omitempty"`
+}
 
 type CacheConfig struct{}
 

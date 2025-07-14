@@ -1,0 +1,244 @@
+engine_config:
+  # gin engine run mode: release, debug, test
+  run_mode: "release"
+  # gin engine serving address
+  listen_at: "0.0.0.0:8080"
+  # enable admin apis
+  enable_admin_api: false
+
+database_config:
+  # database driver: mysql, mariadb, postgres, sqlite, sqlserver
+  driver: "mysql"
+  # enable dao entities auto migrate
+  migrate_domains: true
+  # string type default length
+  string_size: 512
+  # max idle connections
+  max_idle_connections: 20
+  # max open connections
+  max_open_connections: 50
+  # connection lifetime seconds
+  connection_life_time: 3600
+  # database source
+  data_source:
+    # database username, used by mysql, mariadb, postgres, sqlserver
+    username: "dusk_scheduler"
+    # database password, used by mysql, mariadb, postgres, sqlserver
+    password: "dusk_scheduler_password"
+    # database hostname, used by mysql, mariadb, postgres, sqlserver
+    host: "127.0.0.1"
+    # database port, used by mysql, mariadb, postgres, sqlserver
+    port: 3306
+    # database name, used by mysql, mariadb, postgres, sqlserver
+    database: "dusk_scheduler"
+    # database charset, used by mysql, mariadb
+    charset: "utf8mb4"
+    # database location, used by mysql, mariadb, postgres
+    location: "Asia/Shanghai"
+    # ssl model, enable/disable, used by postgres
+    ssl_mode: "disable"
+    # db storage file, used by sqlite
+    file: ":memory:"
+    # db storage cache shard, used by sqlite
+    cache: "?cache=shared"
+  # custom driver options, not support yet
+  driver_options: null
+
+cache_config:
+
+logger_config:
+
+email_config:
+  # allowed email domains
+  allowed_domains:
+    - "qq.com"
+    - "163.com"
+  # mail content templates, do not edit
+  mail_templates:
+    register_client:
+      subject: "Welcome to DuskSystem"
+      text: ""
+  # email service provider, smtp, api
+  provider: "smtp"
+  # smtp provider options
+  smtp_provider:
+    # smtp account name
+    username: "no-reply@dusk-system.dev"
+    # smtp account password
+    password: "1145141919810"
+    # smtp host
+    host: "smtp.outlook.com"
+    # smtp port
+    port: 587
+    # smtp sender account
+    sender: "DuskSystem <no-reply@dusk-system.dev>"
+
+position_locator_config:
+  # position locator provider, ip.sb, amap, tencent_map
+  provider: "ip.sb"
+
+client_options:
+  # default client permission
+  default_client_permission:
+    # default redemption code
+    promotional_code: "dusk_default"
+    # allow call brush api
+    allow_brush: false
+    # allow set delay parameter
+    allow_delay: false
+    # max allow render height in pixel
+    allow_height: 1080
+    # max allow render width in pixel
+    allow_width: 1920
+    # client priority, 0-2
+    allow_priority: 0
+    # client default quota
+    default_quota: 10000
+    # max requests during a statistics duration
+    limit_frequency: 10
+    # statistics duration seconds
+    limit_duration: 60
+  # generated api key prefix
+  client_api_key_prefix: "dk_"
+  # authorization code expire seconds
+  auth_code_expire_seconds: 1800
+  # email address desensitize digit on prefix
+  desensitize_prefix: 3
+  # email address desensitize digit on suffix
+  desensitize_suffix: 3
+  # desensitize including domain part
+  desensitize_domain: false
+
+task_options:
+  # max items returned when list tasks
+  list_page_limit: 50
+
+painter_options:
+  # default storage policy
+  storage_policy: "s3"
+  # dictionary of naming new client
+  naming_rule: "arknights"
+  # dictionary content of naming rule
+  naming_dictionary:
+    arknights:
+      - "exusiai"
+      - "siege"
+      - "irit"
+      - "eyjafjalla"
+      - "angelina"
+      - "shining"
+      - "nightingale"
+      - "hoshiguma"
+      - "saria"
+      - "silverash"
+      - "skadi"
+      - "ch'en"
+      - "schwarz"
+      - "hellagur"
+      - "magallan"
+      - "mostima"
+      - "blaze"
+      - "aak"
+      - "nian"
+      - "ceobe"
+      - "bagpipe"
+      - "phantom"
+      - "weedy"
+      - "w"
+      - "роса"
+      - "suzuran"
+      - "thorns"
+      - "eunectes"
+      - "surtr"
+      - "blemishine"
+      - "mudrock"
+      - "rosmontis"
+      - "mountain"
+      - "archetto"
+      - "saga"
+      - "dusk"
+      - "ash"
+      - "passenger"
+      - "gladiia"
+      - "kal'tsit"
+      - "skadi-the-corrupting-heart"
+      - "carnelian"
+      - "pallas"
+      - "mizuki"
+      - "ch'en-the-holungday"
+      - "saileach"
+      - "fartooth"
+      - "flametail"
+      - "nearl-the-radiant-knight"
+      - "gnosis"
+      - "lee"
+      - "ling"
+      - "goldenglow"
+      - "fiammetta"
+      - "horn"
+      - "lumen"
+      - "irene"
+      - "specter-the-unchained"
+      - "ebenholz"
+      - "dorothy"
+      - "позёмка"
+      - "gavial-the-invincible"
+      - "młynar"
+      - "stainless"
+      - "vigil"
+      - "penance"
+      - "texas-the-omertosa"
+      - "reed-the-flame-shadow"
+      - "lin"
+      - "chongyue"
+      - "qiubai"
+      - "kirin-r-yato"
+      - "ines"
+      - "silence-the-paradigmatic"
+      - "ho'olheyak"
+      - "muelsyse"
+      - "executor-the-ex-foedere"
+      - "typhon"
+      - "swire-the-elegant-wit"
+      - "eyjafjalla-the-hvít-aska"
+      - "jessica-the-liberated"
+      - "hoederer"
+      - "lessing"
+      - "viviana"
+      - "virtuosa"
+      - "degenbrecher"
+      - "ray"
+      - "zuo-le"
+      - "shu"
+      - "ela"
+      - "ascalon"
+      - "civilight-eterna"
+      - "logos"
+      - "wiš'adel"
+      - "ulpianus"
+      - "nymph"
+      - "narantuya"
+      - "pepe"
+      - "marcille"
+      - "vina-victoria"
+      - "crownslayer"
+      - "vulpisfoglia"
+      - "lappland-the-decadenza"
+      - "thorns-the-lodestar"
+      - "blaze-the-igniting-spark"
+      - "yu"
+      - "entelechia"
+      - "necras"
+      - "mon3tr"
+      - "sankta-miksaparato"
+      - "lemuen"
+      - "exusiai-the-new-covenant"
+      - "tragodia"
+      - "leizi-the-thunderbringer"
+    endfield:
+      - "ember"
+      - "endministrator"
+      - "gilberta"
+      - "laevatain"
+      - "lifeng"
+      - "yvonne"

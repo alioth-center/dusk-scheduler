@@ -4,8 +4,6 @@ import (
 	"github.com/alioth-center/dusk-scheduler/app/handler"
 	"github.com/alioth-center/dusk-scheduler/app/repository"
 	"github.com/alioth-center/dusk-scheduler/app/service"
-	"github.com/alioth-center/dusk-scheduler/infra/config"
-	"os"
 )
 
 func init() {
@@ -17,30 +15,12 @@ func init() {
 	initEngine()
 }
 
-func initConfig() {
-	switch os.Getenv("CONFIG_TYPE") {
-	case "file":
-		configReader := config.NewFileConfig(os.Getenv("CONFIG_FILE_PATH"))
-		if readErr := configReader.ParseAppConfig("", "", &appConfig); readErr != nil {
-			panic(readErr)
-		}
-	case "apollo":
-		panic("apollo support not implemented yet")
-	case "remote_url":
-		configReader := config.NewRemoteURLConfig()
-		if readErr := configReader.ParseAppConfig(os.Getenv("CONFIG_URL_PATH"), "", &appConfig); readErr != nil {
-			panic(readErr)
-		}
-	default:
-		panic("invalid config type")
-	}
-}
-
 func initInfra() {
 	initHttpClient(&appConfig)
 	initEmailSenderClient(&appConfig)
 	initPositionLocator(&appConfig, httpClient)
 	initBrushSdk(&appConfig, httpClient)
+	initDatabase(&appConfig)
 }
 
 func initRepository() {
@@ -68,10 +48,6 @@ func initHandler() {
 	outcomeHandler = handler.NewOutcomeHandler(taskService, outcomeService, painterService)
 	painterHandler = handler.NewPainterHandler(taskService, outcomeService, emailService, painterService)
 	taskHandler = handler.NewTaskHandler(clientService, taskService, outcomeService, brushService)
-
-	handlers = []handler.Handler{
-		brushHandler, clientHandler, outcomeHandler, painterHandler, taskHandler,
-	}
 }
 
 func initEngine() {
